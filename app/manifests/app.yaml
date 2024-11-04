@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: containscloud-demo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: containscloud-app-service
+  namespace: containscloud-demo
+spec:
+  type: LoadBalancer
+  selector:
+    app: containscloud-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: containscloud-app
+  namespace: containscloud-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: containscloud-app
+  template:
+    metadata:
+      labels:
+        app: containscloud-app
+    spec:
+      containers:
+        - name: containscloud-app
+          image: diego7marques/app-test:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: HOST_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "http://$(HOST_IP):4317"

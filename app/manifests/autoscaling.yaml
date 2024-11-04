@@ -1,0 +1,43 @@
+apiVersion: keda.sh/v1alpha1
+kind: TriggerAuthentication
+metadata:
+  name: keda-trigger-auth-datadog-secret
+  namespace: containscloud-demo
+spec:
+  secretTargetRef:
+  - parameter: apiKey
+    name: datadog-secrets
+    key: apiKey
+  - parameter: appKey
+    name: datadog-secrets
+    key: appKey
+  - parameter: datadogSite
+    name: datadog-secrets
+    key: datadogSite
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: containscloud-scaledobject
+  namespace: containscloud-demo
+spec:
+  scaleTargetRef:
+    name: containscloud-app
+  # Minimum numer of replicas
+  minReplicaCount: 1
+  # Maximum numer of replicas
+  maxReplicaCount: 6
+  triggers:
+  # Use Datadog as trigger to the scaling
+  - type: datadog
+    # Whether the target value is global or average per pod.
+    metricType: "Value"
+    metadata:
+      # Datadog metric query
+      query: "sum:number_of_sales{*}.as_count()"
+      # Value that will trigger the scale of TargetRef
+      queryValue: "30"
+      # The metric value to return to the HPA if a metric value wasn't found
+      metricUnavailableValue: "0"
+    authenticationRef:
+      name: keda-trigger-auth-datadog-secret

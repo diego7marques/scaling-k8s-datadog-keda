@@ -1,0 +1,21 @@
+apiVersion: datadoghq.com/v2alpha1
+kind: DatadogAgent
+metadata:
+  name: datadog
+  namespace: datadog
+spec:
+  global:
+    clusterName: eks-lab
+    site: datadoghq.com
+    credentials:
+      apiSecret:
+        secretName: datadog-secret
+        keyName: api-key
+  features:
+    otlp:
+      receiver:
+        protocols:
+          grpc:
+            enabled: true
+          http:
+            enabled: true
