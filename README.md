@@ -1,6 +1,6 @@
 # Scaling beyond the technical with KEDA and Datadog
 
-📄 The files available in this repository are from the "Scaling beyond the technical with KEDA and Datadog" blog post of [contains(cloud)](https://containscloud.com/) ☁️
+📄 The files available in this repository are from the "[Scaling beyond the technical with KEDA and Datadog](https://containscloud.com/2024/11/04/scaling-beyond-the-technical-with-keda-and-datadog/)" blog post of [contains(cloud)](https://containscloud.com/) ☁️
 
 # Architecture
 ![architecture](./images/architecture.png)
