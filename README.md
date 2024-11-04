@@ -12,7 +12,7 @@
 * An [API and Application Key](https://docs.datadoghq.com/account_management/api-app-keys/) of your Datadog account.
 * [k6](https://k6.io/) installed 
 
-
+## Setup
 1. Install KEDA
     ```sh
     ## Installing KEDA
